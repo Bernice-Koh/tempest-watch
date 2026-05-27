@@ -19,9 +19,9 @@ config.set_main_option("sqlalchemy.url", get_settings().database_url)
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# Importing model modules here registers their tables with Base.metadata so
-# `alembic revision --autogenerate` sees them. Add new imports as models land.
-# from models import card
+# Importing the models package registers every table with Base.metadata, which
+# is what `alembic revision --autogenerate` compares against the live database.
+import models  # noqa: F401, E402
 
 target_metadata = Base.metadata
 
