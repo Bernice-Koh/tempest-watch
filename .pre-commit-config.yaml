@@ -1,0 +1,67 @@
+# Pre-commit hooks for tempest-watch.
+#
+# Install once per clone:
+#   pip install pre-commit            # or: uv tool install pre-commit
+#   pre-commit install                # installs the pre-commit hook
+#   pre-commit install --hook-type commit-msg   # installs the commit-msg hook
+#
+# Run on all files (e.g. after editing this config):
+#   pre-commit run --all-files
+
+repos:
+  # --- generic hygiene ---
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ["--maxkb=500"]
+      - id: check-merge-conflict
+      - id: detect-private-key
+
+  # --- python: ruff (lint + format) ---
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.7.4
+    hooks:
+      - id: ruff
+        args: ["--fix"]
+        files: ^backend/
+      - id: ruff-format
+        files: ^backend/
+
+  # --- python: mypy (local — needs project venv) ---
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy (backend)
+        entry: uv run --project backend mypy backend/src
+        language: system
+        pass_filenames: false
+        files: ^backend/src/.*\.py$
+
+  # --- frontend: prettier ---
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
+    hooks:
+      - id: prettier
+        files: ^frontend/.*\.(ts|tsx|js|jsx|css|json|md|yaml|yml)$
+
+  # --- frontend: eslint (local — needs node_modules) ---
+  - repo: local
+    hooks:
+      - id: eslint
+        name: eslint (frontend)
+        entry: npm --prefix frontend run lint --silent
+        language: system
+        pass_filenames: false
+        files: ^frontend/.*\.(ts|tsx)$
+
+  # --- commit message: conventional commits format ---
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.6.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: []
