@@ -21,7 +21,7 @@ if config.config_file_name is not None:
 
 # Importing model modules here registers their tables with Base.metadata so
 # `alembic revision --autogenerate` sees them. Add new imports as models land.
-# from models import card  # noqa: F401
+# from models import card
 
 target_metadata = Base.metadata
 
