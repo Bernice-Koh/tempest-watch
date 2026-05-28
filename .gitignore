@@ -36,6 +36,9 @@ Thumbs.db
 # --- claude code local state ---
 .claude/settings.local.json
 
+# --- graphify (generated knowledge-graph artifacts) ---
+graphify-out/
+
 # --- temp / scratch ---
 tmp/
 scratch/
