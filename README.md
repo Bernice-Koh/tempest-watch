@@ -109,6 +109,10 @@ The ordering principle is to get a boring end-to-end loop that pings my phone wi
 - The companion avatar ships in M5 as a moving, reactive presence; deeper chatbot behaviour comes later.
 - This is a personal project, built lean on purpose. The database runs on RDS in production so I'm not babysitting Postgres; everything else is hand-deployed and not intended to grow into a managed cloud service.
 
+## Developer tooling
+
+- **Knowledge graph for AI navigation ([Graphify](https://github.com/safishamsi/graphify)).** The repo is indexed into a structural knowledge graph (Tree-sitter extraction → `graph.json` / `graph.html` / `GRAPH_REPORT.md`) so an AI coding assistant can navigate by dependency structure instead of grepping every file. The aim is token optimization: following graph edges to the relevant code is cheaper than repeatedly reading and searching raw files as the codebase grows. Invoked on demand via the `/graphify` skill in Claude Code. The build runs in no-LLM (structural-only) mode, so indexing costs nothing. Generated artifacts live in `graphify-out/` and are gitignored; rebuild locally with `graphify update .` or keep it live with `graphify watch .`.
+
 ## Documentation
 
 - [docs/CONVENTIONS.md](docs/CONVENTIONS.md) — engineering workflow, project shape, testing, git
